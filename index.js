@@ -57,6 +57,28 @@ export default class ScrollPicker extends React.Component {
       clearTimeout(this.timer);
     }
   }
+  
+   static getDerivedStateFromProps = (props,state) => {
+    if(props.selectedIndex!=state.selectedIndex){
+      return {
+        selectedIndex : props.selectedIndex
+      }
+    }
+    return {
+      
+    }
+  }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if(prevProps.selectedIndex!=this.props.selectedIndex) {
+      let { selectedIndex, dataSource } = this.props;
+       this.scrollToIndex(selectedIndex);
+       if (this.props.onValueChange) {
+        const selectedValue = dataSource[selectedIndex];
+        this.props.onValueChange(selectedValue, selectedIndex);
+      }
+    }
+  }
+
 
   render() {
     const {header, footer} = this.renderPlaceHolder();
